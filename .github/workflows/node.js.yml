@@ -54,7 +54,13 @@ jobs:
         export PATH=$HOME/.bun/bin:$PATH
         bun install || npm install
 
-   
+    # Build the React App with Vite
+    - name: Build React App
+      run: |
+        export PATH=$HOME/.bun/bin:$PATH
+        bun run build:prod || npm run build:prod
+
+
     # Restart Application with PM2
     - name: Restart React App with PM2
       run: |
