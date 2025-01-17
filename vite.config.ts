@@ -6,7 +6,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
 
   // Set NODE_ENV explicitly
-  process.env.NODE_ENV = mode === 'production' ? 'production' : 'development';
+  process.env.NODE_ENV = mode === 'development' ? 'development' : 'development';
 
   return {
     plugins: [react()],
@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       chunkSizeWarningLimit: 50000,
-      minify: mode === 'production', // Disable minification for development
+      minify: mode === 'development', // Disable minification for development
       sourcemap: mode === 'development', // Enable source maps for easier debugging
     },
     server: {
