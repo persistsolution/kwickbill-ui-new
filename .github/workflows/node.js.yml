@@ -53,8 +53,7 @@ jobs:
       run: |
         echo "Checking root directory..."
         ls -la
-        echo "Checking public directory..."
-        ls -la public || echo "Public directory not found!"
+        
 
     # Check if public/index.html exists
     - name: Verify index.html
