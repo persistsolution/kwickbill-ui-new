@@ -4,16 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "start": "HOST=0.0.0.0 PORT=5177 react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "sass": "sass ./src/assets/scss:./src/assets/css/",
-    "sass-min": "sass ./src/assets/scss:./src/assets/css/ --style compressed"
-  },
+  "dev": "vite",
+  "start": "vite", // Start the Vite dev server instead of react-scripts
+  "build": "tsc && vite build", // Compile TypeScript and build with Vite
+  "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0", // Run linting
+  "preview": "vite preview", // Preview the production build
+  "sass": "sass ./src/assets/scss:./src/assets/css/", // Compile SCSS to CSS
+  "sass-min": "sass ./src/assets/scss:./src/assets/css/ --style compressed" // Compile and minify SCSS to CSS
+},
   "dependencies": {
     "@fullcalendar/core": "^6.1.9",
     "@fullcalendar/daygrid": "^6.1.9",
