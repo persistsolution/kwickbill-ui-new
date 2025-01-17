@@ -53,17 +53,20 @@ jobs:
       run: |
         echo "Checking root directory..."
         ls -la
-        
-
-    # Check if public/index.html exists
-    - name: Verify index.html
-      run: |
+        echo "Checking index.html in the root folder..."
         if [ ! -f index.html ]; then
-          echo "Error: index.html is missing."
+          echo "Error: index.html is missing in the root folder."
           exit 1
         else
-          echo "index.html exists."
+          echo "index.html exists in the root folder."
         fi
+
+    # Move index.html to public folder (React-Scripts Requirement)
+    - name: Move index.html to Public Directory
+      run: |
+        echo "Moving index.html to public directory..."
+        mkdir -p public
+        mv index.html public/index.html
 
     # Install Dependencies
     - name: Install Dependencies
