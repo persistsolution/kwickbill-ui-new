@@ -2,11 +2,15 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
-  // Load environment variables based on the mode (development, production, etc.)
+  // Load environment variables based on the mode
   const env = loadEnv(mode, process.cwd());
 
   // Set NODE_ENV explicitly
-  process.env.NODE_ENV = mode === 'development' ? 'development' : 'development';
+  process.env.NODE_ENV = mode === 'development' ? 'development' : 'production';
+
+  // Define custom output directory based on branch
+  const branch = process.env.BRANCH || 'dev'; // Default to 'dev' if BRANCH is not provided
+  const outputDir = `dist/${branch}`;
 
   return {
     plugins: [react()],
@@ -17,8 +21,9 @@ export default defineConfig(({ mode }) => {
       },
     },
     build: {
+      outDir: outputDir, // Set dynamic output directory
       chunkSizeWarningLimit: 50000,
-      minify: mode === 'development', // Disable minification for development
+      minify: mode === 'development' ? false : true, // Disable minification for development
       sourcemap: mode === 'development', // Enable source maps for easier debugging
     },
     server: {
