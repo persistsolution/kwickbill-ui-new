@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       host: true,
-      port: 5177, // Default port
+      port: 5173, // Default port
     },
   };
 });
