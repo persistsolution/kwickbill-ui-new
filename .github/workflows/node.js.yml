@@ -1,0 +1,74 @@
+name: React CI with Vite and PM2
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request_target:
+    branches: [ "dev" ]
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/dev'
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        node-version: [22.12.0]
+
+    steps:
+    # Checkout the repository
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # Set up Node.js
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    # Ensure Bun is Installed
+    - name: Ensure Bun is Installed
+      run: |
+        if ! command -v bun &> /dev/null; then
+          echo "Installing Bun..."
+          curl -fsSL https://bun.sh/install | bash
+          echo "$HOME/.bun/bin" >> $GITHUB_PATH
+          echo "export PATH=$HOME/.bun/bin:\$PATH" >> $HOME/.bashrc
+        fi
+        export PATH=$HOME/.bun/bin:$PATH
+        bun --version
+
+    # Ensure PM2 is Installed
+    - name: Ensure PM2 is Installed
+      run: |
+        if ! command -v pm2 &> /dev/null; then
+          echo "Installing PM2..."
+          npm install -g pm2
+          echo "$(npm bin -g)" >> $GITHUB_PATH
+        fi
+        pm2 --version
+
+    # Install Dependencies
+    - name: Install Dependencies
+      run: |
+        export PATH=$HOME/.bun/bin:$PATH
+        bun install || npm install
+
+    # Build the React App with Vite
+    - name: Build React App
+      run: |
+        export PATH=$HOME/.bun/bin:$PATH
+        bun run build || npm run build
+
+    # Restart Application with PM2
+    - name: Restart React App with PM2
+      run: |
+        export PATH=$HOME/.bun/bin:$PATH
+        echo "Restarting React application with PM2..."
+        # Start or restart kwickbill-ui-dev
+        pm2 delete kwickbill-ui-dev
+        pm2 start serve --name kwickbill-ui-dev -- -s dist -l 5177 || pm2 restart kwickbill-ui-dev --update-env
+        # Save the PM2 process list
+        pm2 save
+        # List all PM2 processes
+        pm2 list 
