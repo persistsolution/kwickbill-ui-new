@@ -5,15 +5,14 @@
   "type": "module",
   "scripts": {
   "dev": "vite --port 5177 --mode development",
-  "build:prod": "BRANCH=prod vite build --mode production",
-  "build:stage": "BRANCH=stage vite build --mode production",
-  "build:dev": "BRANCH=dev vite build --mode development",
-  "build:test": "BRANCH=test vite build --mode production",
-  "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-  "sass": "sass ./src/assets/scss:./src/assets/css/",
-  "sass-min": "sass ./src/assets/scss:./src/assets/css/ --style compressed",
-  "watch:sass": "sass --watch ./src/assets/scss:./src/assets/css/"
-},
+  "start": "vite --port 5177 --mode development",
+  "build": "vite build --mode development",
+  "build:dev": "tsc && vite build --mode development", 
+  "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0", 
+  "preview": "vite preview --port 5177", 
+  "sass": "sass ./src/assets/scss:./src/assets/css/", 
+  "sass-min": "sass ./src/assets/scss:./src/assets/css/ --style compressed" 
+},,
   "dependencies": {
     "@fullcalendar/core": "^6.1.9",
     "@fullcalendar/daygrid": "^6.1.9",
