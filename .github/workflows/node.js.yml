@@ -49,10 +49,11 @@ jobs:
         pm2 --version
 
     # Debug Directory Structure
-    - name: Debug File Structure
+    - name: Debug Directory Structure
       run: |
-        echo "Checking file structure..."
+        echo "Checking root directory..."
         ls -la
+        echo "Checking public directory..."
         ls -la public || echo "Public directory not found!"
 
     # Check if public/index.html exists
@@ -69,13 +70,14 @@ jobs:
     - name: Install Dependencies
       run: |
         export PATH=$HOME/.bun/bin:$PATH
+        rm -rf node_modules dist build # Clean old builds
         bun install || npm install
 
-    # Build the React App with Vite or React Scripts
+    # Build the React App
     - name: Build React App
       run: |
         export PATH=$HOME/.bun/bin:$PATH
-        rm -rf node_modules dist build # Clean old builds
+        echo "Building the React app..."
         bun run build || npm run build
 
     # Restart Application with PM2
@@ -83,10 +85,7 @@ jobs:
       run: |
         export PATH=$HOME/.bun/bin:$PATH
         echo "Restarting React application with PM2..."
-        # Start or restart kwickbill-ui-dev
         pm2 delete kwickbill-ui-dev || true
         pm2 start serve --name kwickbill-ui-dev -- -s dist -l 5177 || pm2 restart kwickbill-ui-dev --update-env
-        # Save the PM2 process list
         pm2 save
-        # List all PM2 processes
         pm2 list
