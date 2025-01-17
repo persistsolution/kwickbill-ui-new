@@ -2,23 +2,27 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd()); // Load environment variables based on the mode
+  const env = loadEnv(mode, process.cwd());
+
+  process.env.NODE_ENV = mode === 'production' ? 'production' : 'development';
 
   return {
-    // Use base path when deploying SSR
-    // base: mode === 'production' ? '/vexel-ts/preview/' : '/',
-
     plugins: [react()],
     define: {
-      'process.env': env, // Dynamically load environment variables
+      'process.env': {
+        NODE_ENV: process.env.NODE_ENV,
+        ...env,
+      },
     },
     build: {
       chunkSizeWarningLimit: 50000,
-      minify: mode === 'production', // Minify only in production mode
+      minify: mode === 'production',
     },
     server: {
       host: true,
-      port: 5173, // Default port
+      port: mode === 'production' ? 5173 :
+            mode === 'staging' ? 5175 :
+            mode === 'testing' ? 5174 : 5177,
     },
   };
 });
