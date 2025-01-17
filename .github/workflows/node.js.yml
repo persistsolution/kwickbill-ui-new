@@ -58,8 +58,8 @@ jobs:
     # Check if public/index.html exists
     - name: Verify index.html
       run: |
-        if [ ! -f public/index.html ]; then
-          echo "Error: public/index.html is missing."
+        if [ ! -f index.html ]; then
+          echo "Error: index.html is missing."
           exit 1
         else
           echo "index.html exists."
