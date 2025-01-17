@@ -4,13 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "sass": "sass ./src/assets/scss:./src/assets/css/",
-    "sass-min": "sass ./src/assets/scss:./src/assets/css/ --style compressed"
-  },
+  "dev:production": "vite --mode production",
+  "build:production": "vite build --mode production",
+  "preview:production": "vite preview --mode production --port 5173",
+  "sass": "sass ./src/assets/scss:./src/assets/css/",
+  "sass-min": "sass ./src/assets/scss:./src/assets/css/ --style compressed"
+},
   "dependencies": {
     "@fullcalendar/core": "^6.1.9",
     "@fullcalendar/daygrid": "^6.1.9",
