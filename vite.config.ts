@@ -17,12 +17,26 @@ export default defineConfig(({ mode }) => {
       },
     },
     build: {
-      chunkSizeWarningLimit: 50000,
-      minify: mode === 'production',
+      chunkSizeWarningLimit: 2000, // Lowered the warning limit for better feedback
+      minify: true, // Always minify in production
+      sourcemap: false, // Disable source maps in production for better security
+      outDir: 'dist', // Output directory for production builds
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom'], // Separate vendor code into its own chunk
+          },
+        },
+      },
     },
     server: {
       host: true,
-      port: mode === 'production' ? 5173 : 5173, // Example port logic
+      port: 5173, // Default production port
+      open: false, // Do not automatically open the browser in production
+    },
+    preview: {
+      host: true,
+      port: 5173, // Preview server port for production builds
     },
   };
 });
