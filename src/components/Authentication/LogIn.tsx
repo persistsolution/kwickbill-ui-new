@@ -110,7 +110,7 @@ const Login: FC<ComponentProps> = () => {
                                         alt=""
                                     />
                                     <h4 className="mb-1">
-                                        {isOtpSent ? "Verify OTP" : "Sign In Production"}
+                                        {isOtpSent ? "Verify OTP" : "Sign In Development"}
                                     </h4>
                                     <p>
                                         {isOtpSent
