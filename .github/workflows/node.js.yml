@@ -66,7 +66,6 @@ jobs:
         export PATH=$HOME/.bun/bin:$PATH
         echo "Restarting React application with PM2..."
         # Start or restart kwickbill-ui-prod
-        pm2 delete kwickbill-ui-prod
         pm2 start serve --name kwickbill-ui-prod -- -s dist -l 5173 || pm2 restart kwickbill-ui-prod --update-env
         # Save the PM2 process list
         pm2 save
