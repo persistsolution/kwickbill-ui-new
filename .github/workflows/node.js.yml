@@ -58,7 +58,6 @@ jobs:
     - name: Build React App
       run: |
         export PATH=$HOME/.bun/bin:$PATH
-        echo "Building the React app for production..."
         bun run build:prod || npm run build:prod
 
     # Restart Application with PM2
@@ -66,18 +65,12 @@ jobs:
       run: |
         export PATH=$HOME/.bun/bin:$PATH
         echo "Restarting React application with PM2..."
-        APP_NAME="kwickbill-ui-prod"
-        DIST_DIR="dist/prod"
-        PORT=5173
-
         # Delete the existing process if it exists
-        pm2 delete $APP_NAME || echo "Process $APP_NAME not found, skipping delete step."
-
+        pm2 delete kwickbill-ui-main || echo "Process kwickbill-ui-main not found, skipping delete step."
         # Start or restart the application
-        pm2 start serve --name $APP_NAME -- -s $DIST_DIR -l $PORT || pm2 restart $APP_NAME --update-env
-
+        pm2 start serve --name kwickbill-ui-main -- -s dist -l 5173 || pm2 restart kwickbill-ui-main --update-env
         # Save the PM2 process list
         pm2 save
-
         # List all PM2 processes
         pm2 list
+ 
