@@ -13,7 +13,7 @@ RUN bun install
 COPY . ./
 
 # Expose the default development server port
-EXPOSE 5173
+EXPOSE 5177
 
 # Start the development server
 CMD ["bun", "dev"]
