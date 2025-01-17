@@ -1,14 +1,21 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-export default defineConfig(({ mode }) => {
-  const port = parseInt(process.env.VITE_APP_PORT || '5173', 10);
+// https://vitejs.dev/config/
+export default defineConfig({
 
-  return {
-    server: {
-      port,
-    },
-    build: {
-      outDir: `dist-${mode}`,
-    },
-  };
-});
+  // base: "/vexel-ts/preview/", Use base path for while deploying the project the SSR.
+  
+  plugins: [react()],
+  define: {
+    'process.env': {}
+  },
+  build: {
+    chunkSizeWarningLimit: 50000,
+    minify: true,
+  },
+  server: {
+    host: true,
+    port: 5173, // Default port
+  }
+})
