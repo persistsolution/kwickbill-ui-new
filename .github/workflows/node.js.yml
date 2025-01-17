@@ -54,16 +54,11 @@ jobs:
         export PATH=$HOME/.bun/bin:$PATH
         bun install || npm install
 
-    # Build the React App with Vite
-    - name: Build React App
-      run: |
-        export PATH=$HOME/.bun/bin:$PATH
-        bun run build:prod || npm run build:prod
-
+   
     # Restart Application with PM2
     - name: Restart React App with PM2
       run: |
-        export PATH=$HOME/.bun/bin:$PATH
+       
         echo "Restarting React application with PM2..."
         # Delete the existing process if it exists
         pm2 delete kwickbill-ui-prod || echo "Process kwickbill-ui-prod not found, skipping delete step."
