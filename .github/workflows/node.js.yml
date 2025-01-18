@@ -72,5 +72,5 @@ jobs:
         pm2 start serve --name kwickbill-ui-prod -- -s dist -l 5173 || pm2 restart kwickbill-ui-prod --update-env
         # Save the PM2 process list
         pm2 save
-        # List all PM2 processes
+        # List all PM2 processes 
         pm2 list
