@@ -57,10 +57,16 @@ jobs:
     # Build the React App with Vite
     - name: Build React App
       run: |
-        export PATH=$HOME/.bun/bin:$PATH
-        bun run build:prod || npm run build:prod
+        bun run build:main
 
-
+    # Step 5: Upload build artifact (Optional)
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v3
+      with:
+          name: build-${{ github.ref_name }}
+          path: |
+            build-main
+            
     # Restart Application with PM2
     - name: Restart React App with PM2
       run: |
