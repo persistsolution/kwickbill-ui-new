@@ -16,6 +16,6 @@ export default defineConfig({
   },
   server: {
     host: true,
-    port: 5175, // Default port
+    port: 5173, // Default port
   }
 })
