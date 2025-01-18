@@ -2,13 +2,14 @@ name: React CI with Vite and PM2
 
 on:
   push:
-    branches: ["stage"]
+    branches:
+      - stage
   pull_request_target:
-    branches: ["stage"]
+    branches:
+      - stage
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/stage'
     runs-on: self-hosted
 
     strategy:
@@ -48,22 +49,35 @@ jobs:
         fi
         pm2 --version
 
-    # Step 5: Install Dependencies
+    # Step 5: Stop the dev branch application if running
+    - name: Stop Dev Branch Application
+      run: |
+        echo "Checking for running dev branch application..."
+        export PATH=$HOME/.bun/bin:$PATH
+        if pm2 describe kwickbill-ui-dev > /dev/null; then
+          echo "Stopping dev branch application..."
+          pm2 stop kwickbill-ui-dev
+          pm2 delete kwickbill-ui-dev
+        else
+          echo "No dev branch application is currently running."
+        fi
+
+    # Step 6: Install Dependencies
     - name: Install Dependencies
       run: |
         export PATH=$HOME/.bun/bin:$PATH
         bun install || npm install
 
-    # Step 6: Build the React App with Vite
+    # Step 7: Build the React App with Vite
     - name: Build React App
       run: |
         export PATH=$HOME/.bun/bin:$PATH
         bun run build:stage || npm run build:stage
 
-    # Step 7: Restart Application with PM2
-    - name: Restart React App with PM2
+    # Step 8: Restart Application with PM2 for Staging
+    - name: Restart Staging Application with PM2
       run: |
-        echo "Restarting React application with PM2..."
+        echo "Restarting staging application with PM2..."
         # Delete the existing process if it exists
         if pm2 describe kwickbill-ui-stage > /dev/null; then
           pm2 delete kwickbill-ui-stage
