@@ -49,18 +49,7 @@ jobs:
         fi
         pm2 --version
 
-    # Step 5: Stop the dev branch application if running
-    - name: Stop Dev Branch Application
-      run: |
-        echo "Checking for running dev branch application..."
-        export PATH=$HOME/.bun/bin:$PATH
-        if pm2 describe kwickbill-ui-dev > /dev/null; then
-          echo "Stopping dev branch application..."
-          pm2 stop kwickbill-ui-dev
-          pm2 delete kwickbill-ui-dev
-        else
-          echo "No dev branch application is currently running."
-        fi
+
 
     # Step 6: Install Dependencies
     - name: Install Dependencies
