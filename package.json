@@ -3,18 +3,17 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
-  "dev": "vite --port 5177 --mode production",
-  "start": "vite --port 5177 --mode production",
-  "build": "vite build --mode production",
-  "build:prod": "tsc && vite build --mode production",
-  "build:main": "vite build --mode production --outDir build-main",
-  "build:dev": "vite build --mode development --outDir build-dev",
-  "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-  "preview": "vite preview --port 5177",
-  "sass": "sass ./src/assets/scss:./src/assets/css/",
-  "sass-min": "sass ./src/assets/scss:./src/assets/css/ --style compressed"
-},
+ "scripts": {
+    "dev": "vite",
+    "start": "HOST=0.0.0.0 PORT=5177 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "sass": "sass ./src/assets/scss:./src/assets/css/",
+    "sass-min": "sass ./src/assets/scss:./src/assets/css/ --style compressed"
+  },
   "dependencies": {
     "@fullcalendar/core": "^6.1.9",
     "@fullcalendar/daygrid": "^6.1.9",
