@@ -10,9 +10,9 @@ export default defineConfig({
   define: {
     'process.env': {}
   },
-  build: {
-    chunkSizeWarningLimit: 50000,
-    minify: true,
+ build: {
+    outDir: 'dev-dist', // Specify your desired output directory for development builds
+    sourcemap: true, // Include source maps for easier debugging in development
   },
   server: {
     host: true,
