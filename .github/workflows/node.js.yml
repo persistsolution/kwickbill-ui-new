@@ -67,13 +67,12 @@ jobs:
           name: build-main
           path: build-main
 
-      # Serve the React App with PM2
+      # Serve the Application with PM2
       - name: Serve React App with PM2
         run: |
-          echo "Serving React application with PM2..."
-          # Delete existing PM2 process if any
+          echo "Starting the application with PM2..."
+          export PATH=$HOME/.npm-global/bin:$PATH
           pm2 delete kwickbill-ui-prod || echo "Process kwickbill-ui-prod not found, skipping delete step."
-          # Start or restart the application
-          pm2 start serve --name kwickbill-ui-prod -- -s build-main -l 5173
+          pm2 start "$(npm bin -g)/serve" --name kwickbill-ui-prod -- -s build-main -l 5173
           pm2 save
           pm2 list
