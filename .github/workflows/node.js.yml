@@ -69,7 +69,7 @@ jobs:
         # Delete the existing process if it exists
         pm2 delete kwickbill-ui-prod || echo "Process kwickbill-ui-prod not found, skipping delete step."
         # Start or restart the application
-        pm2 start serve --name kwickbill-ui-prod -- -s dist-prod -l 5173 || pm2 restart kwickbill-ui-prod --update-env
+        pm2 start serve --name kwickbill-ui-prod -- -s dist -l 5173 || pm2 restart kwickbill-ui-prod --update-env
         # Save the PM2 process list
         pm2 save
         # List all PM2 processes
