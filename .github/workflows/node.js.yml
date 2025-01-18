@@ -2,13 +2,16 @@ name: React CI with Vite and PM2
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+      - dev
   pull_request_target:
-    branches: [ "main" ]
+    branches:
+      - main
+      - dev
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/main'
     runs-on: self-hosted
 
     strategy:
@@ -16,62 +19,65 @@ jobs:
         node-version: [22.12.0]
 
     steps:
-    # Checkout the repository
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      # Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    # Set up Node.js
-    - name: Install Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
+      # Set up Node.js
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    # Ensure Bun is Installed
-    - name: Ensure Bun is Installed
-      run: |
-        if ! command -v bun &> /dev/null; then
-          echo "Installing Bun..."
-          curl -fsSL https://bun.sh/install | bash
-          echo "$HOME/.bun/bin" >> $GITHUB_PATH
-          echo "export PATH=$HOME/.bun/bin:\$PATH" >> $HOME/.bashrc
-        fi
-        export PATH=$HOME/.bun/bin:$PATH
-        bun --version
+      # Ensure Bun is Installed
+      - name: Ensure Bun is Installed
+        run: |
+          if ! command -v bun &> /dev/null; then
+            echo "Installing Bun..."
+            curl -fsSL https://bun.sh/install | bash
+            echo "$HOME/.bun/bin" >> $GITHUB_PATH
+            echo "export PATH=$HOME/.bun/bin:\$PATH" >> $HOME/.bashrc
+          fi
+          export PATH=$HOME/.bun/bin:$PATH
+          bun --version
 
-    # Ensure PM2 is Installed
-    - name: Ensure PM2 is Installed
-      run: |
-        if ! command -v pm2 &> /dev/null; then
-          echo "Installing PM2..."
-          npm install -g pm2
-          echo "$(npm bin -g)" >> $GITHUB_PATH
-        fi
-        pm2 --version
+      # Ensure PM2 is Installed
+      - name: Ensure PM2 is Installed
+        run: |
+          if ! command -v pm2 &> /dev/null; then
+            echo "Installing PM2..."
+            npm install -g pm2
+            echo "$(npm bin -g)" >> $GITHUB_PATH
+          fi
+          pm2 --version
 
-    # Install Dependencies
-    - name: Install Dependencies
-      run: |
-        export PATH=$HOME/.bun/bin:$PATH
-        bun install || npm install
+      # Install Dependencies
+      - name: Install Dependencies
+        run: |
+          export PATH=$HOME/.bun/bin:$PATH
+          bun install || npm install
 
-    # Build the React App with Vite
-    - name: Build React App
-      run: |
-        export PATH=$HOME/.bun/bin:$PATH
-        bun run build:prod || npm run build:prod
+      # Build the React App with Vite
+      - name: Build React App
+        run: |
+          export PATH=$HOME/.bun/bin:$PATH
+          if [ "${{ github.ref_name }}" == "main" ]; then
+            bun run build:prod || npm run build:prod
+          elif [ "${{ github.ref_name }}" == "dev" ]; then
+            bun run build:dev || npm run build:dev
+          fi
 
-
-    # Restart Application with PM2
-    - name: Restart React App with PM2
-      run: |
-       
-        echo "Restarting React application with PM2..."
-        # Delete the existing process if it exists
-        pm2 delete kwickbill-ui-prod || echo "Process kwickbill-ui-prod not found, skipping delete step."
-        # Start or restart the application
-        pm2 start serve --name kwickbill-ui-prod -- -s dist -l 5173 || pm2 restart kwickbill-ui-prod --update-env
-        # Save the PM2 process list
-        pm2 save
-        # List all PM2 processes
-        pm2 list
- 
+      # Restart Application with PM2
+      - name: Restart React App with PM2
+        run: |
+          echo "Restarting React application with PM2..."
+          export PATH=$HOME/.bun/bin:$PATH
+          if [ "${{ github.ref_name }}" == "main" ]; then
+            pm2 delete kwickbill-ui-prod || echo "Process kwickbill-ui-prod not found, skipping delete step."
+            pm2 start serve --name kwickbill-ui-prod -- -s build-main -l 5173
+          elif [ "${{ github.ref_name }}" == "dev" ]; then
+            pm2 delete kwickbill-ui-dev || echo "Process kwickbill-ui-dev not found, skipping delete step."
+            pm2 start serve --name kwickbill-ui-dev -- -s build-dev -l 5177
+          fi
+          pm2 save
+          pm2 list
