@@ -11,7 +11,6 @@ export default defineConfig({
     'process.env': {}
   },
   build: {
-    outDir: 'build-dev',
     chunkSizeWarningLimit: 50000,
     minify: true,
   },
