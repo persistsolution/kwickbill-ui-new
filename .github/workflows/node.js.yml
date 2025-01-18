@@ -1,15 +1,14 @@
-name: React CI with Vite and PM2
+name: React CI for Staging with Vite and PM2
 
 on:
   push:
-    branches:
-      - stage
+    branches: ["stage"]
   pull_request_target:
-    branches:
-      - stage
+    branches: ["stage"]
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/stage'
     runs-on: self-hosted
 
     strategy:
@@ -49,21 +48,19 @@ jobs:
         fi
         pm2 --version
 
-
-
-    # Step 6: Install Dependencies
+    # Step 5: Install Dependencies
     - name: Install Dependencies
       run: |
         export PATH=$HOME/.bun/bin:$PATH
         bun install || npm install
 
-    # Step 7: Build the React App with Vite
+    # Step 6: Build the React App for Staging
     - name: Build React App
       run: |
         export PATH=$HOME/.bun/bin:$PATH
         bun run build:stage || npm run build:stage
 
-    # Step 8: Restart Application with PM2 for Staging
+    # Step 7: Restart Application with PM2 for Staging
     - name: Restart Staging Application with PM2
       run: |
         echo "Restarting staging application with PM2..."
