@@ -7,7 +7,7 @@
   "dev": "vite --port 5173 --mode development",
   "start": "vite --port 5173 --mode production",
   "build": "vite build --mode production",
-  "build:prod": "tsc && vite build --mode production",
+  "build:prod": "tsc && vite build --mode production --outDir build-prod",
   "build:main": "vite build --mode production --outDir build-main",
   "build:dev": "vite build --mode development --outDir build-dev",
   "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
