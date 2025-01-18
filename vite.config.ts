@@ -13,7 +13,7 @@ export default defineConfig({
     strictPort: true, // Ensure the server uses the specified port or fails
   },
   build: {
-    outDir: 'stage-dist', // Custom output directory for builds
+    outDir: 'dist', // Custom output directory for builds
     sourcemap: true, // Include source maps for debugging
   },
 });
