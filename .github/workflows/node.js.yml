@@ -2,9 +2,9 @@ name: React CI with Vite and PM2
 
 on:
   push:
-    branches: ["dev"]
+    branches: [ "dev" ]
   pull_request_target:
-    branches: ["dev"]
+    branches: [ "dev" ]
 
 jobs:
   build:
@@ -16,17 +16,17 @@ jobs:
         node-version: [22.12.0]
 
     steps:
-    # Step 1: Checkout the repository
+    # Checkout the repository
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    # Step 2: Set up Node.js
+    # Set up Node.js
     - name: Install Node.js
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
 
-    # Step 3: Ensure Bun is Installed
+    # Ensure Bun is Installed
     - name: Ensure Bun is Installed
       run: |
         if ! command -v bun &> /dev/null; then
@@ -38,7 +38,7 @@ jobs:
         export PATH=$HOME/.bun/bin:$PATH
         bun --version
 
-    # Step 4: Ensure PM2 is Installed
+    # Ensure PM2 is Installed
     - name: Ensure PM2 is Installed
       run: |
         if ! command -v pm2 &> /dev/null; then
@@ -48,29 +48,29 @@ jobs:
         fi
         pm2 --version
 
-    # Step 5: Install Dependencies
+    # Install Dependencies
     - name: Install Dependencies
       run: |
         export PATH=$HOME/.bun/bin:$PATH
         bun install || npm install
 
-    # Step 6: Build the React App with Vite
+    # Build the React App with Vite
     - name: Build React App
       run: |
         export PATH=$HOME/.bun/bin:$PATH
         bun run build || npm run build
 
-    # Step 7: Restart Application with PM2
+
+    # Restart Application with PM2
     - name: Restart React App with PM2
       run: |
+       
         echo "Restarting React application with PM2..."
         # Delete the existing process if it exists
-        if pm2 describe kwickbill-ui-dev > /dev/null; then
-          pm2 delete kwickbill-ui-dev
-        fi
-        # Start the application with the correct folder and port
-        pm2 start serve --name kwickbill-ui-dev -- -s dev-dist -l 5177
+        pm2 delete kwickbill-ui-dev || echo "Process kwickbill-ui-dev not found, skipping delete step."
+        # Start or restart the application
+        pm2 start serve --name kwickbill-ui-dev -- -s dist -l 5177 || pm2 restart kwickbill-ui-dev --update-env
         # Save the PM2 process list
         pm2 save
-        # List all PM2 processes
-        pm2 list
+        # List all PM2 processes 
+        pm2 list 
