@@ -42,3 +42,18 @@ jobs:
           path: |
             build-main
             build-dev
+            
+    # Restart Application with PM2
+      - name: Restart React App with PM2
+        run: |
+          echo "Restarting React application with PM2..."
+          # Delete the existing process if it exists
+          pm2 delete kwickbill-ui-dev || echo "Process kwickbill-ui-dev not found, skipping delete step."
+          # Start or restart the application
+          pm2 start serve --name kwickbill-ui-dev -- -s dist -l 5177 || pm2 restart kwickbill-ui-dev --update-env
+          # Save the PM2 process list
+          pm2 save
+          # List all PM2 processes
+          pm2 list
+
+            
