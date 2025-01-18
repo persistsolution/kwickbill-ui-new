@@ -1,21 +1,16 @@
-name: React CI with Vite and PM2
+name: React Build Workflow with Bun and Vite
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request_target:
-    branches: [ "main" ]
+    branches:
+      - main
+      - dev
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/main'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [22.12.0]
-
-   steps:
+    steps:
       # Step 1: Checkout the code
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -47,18 +42,3 @@ jobs:
           path: |
             build-main
             build-dev
-
-    # Restart Application with PM2
-    - name: Restart React App with PM2
-      run: |
-       
-        echo "Restarting React application with PM2..."
-        # Delete the existing process if it exists
-        pm2 delete kwickbill-ui-prod || echo "Process kwickbill-ui-prod not found, skipping delete step."
-        # Start or restart the application
-        pm2 start serve --name kwickbill-ui-prod -- -s dist -l 5173 || pm2 restart kwickbill-ui-prod --update-env
-        # Save the PM2 process list
-        pm2 save
-        # List all PM2 processes
-        pm2 list
- 
