@@ -11,7 +11,7 @@
   "build:main": "vite build --mode production --outDir build-main",
   "build:dev": "vite build --mode development --outDir build-dev",
   "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-  "preview": "vite preview --port 5173",
+  "preview": "vite preview --port 5177",
   "sass": "sass ./src/assets/scss:./src/assets/css/",
   "sass-min": "sass ./src/assets/scss:./src/assets/css/ --style compressed"
 },
