@@ -9,11 +9,11 @@ export default defineConfig({
   },
   server: {
     host: '0.0.0.0', // Bind to all IP addresses
-    port: 5177, // Set the port
+    port: 5174, // Set the port
     strictPort: true, // Ensure the server uses the specified port or fails
   },
   build: {
-    outDir: 'dev-dist', // Custom output directory for builds
+    outDir: 'stage-dist', // Custom output directory for builds
     sourcemap: true, // Include source maps for debugging
   },
 });
