@@ -2,13 +2,13 @@ name: React CI with Vite and PM2
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dev" ]
   pull_request_target:
-    branches: [ "main" ]
+    branches: [ "dev" ]
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/dev'
     runs-on: self-hosted
 
     strategy:
@@ -58,7 +58,7 @@ jobs:
     - name: Build React App
       run: |
         export PATH=$HOME/.bun/bin:$PATH
-        bun run build:prod || npm run build:prod
+        bun run build:dev || npm run build:dev
 
 
     # Restart Application with PM2
@@ -67,9 +67,9 @@ jobs:
        
         echo "Restarting React application with PM2..."
         # Delete the existing process if it exists
-        pm2 delete kwickbill-ui-prod || echo "Process kwickbill-ui-prod not found, skipping delete step."
+        pm2 delete kwickbill-ui-dev || echo "Process kwickbill-ui-dev not found, skipping delete step."
         # Start or restart the application
-        pm2 start serve --name kwickbill-ui-prod -- -s dist -l 5173 || pm2 restart kwickbill-ui-prod --update-env
+        pm2 start serve --name kwickbill-ui-dev -- -s dist-dev -l 5177 || pm2 restart kwickbill-ui-dev --update-env
         # Save the PM2 process list
         pm2 save
         # List all PM2 processes
